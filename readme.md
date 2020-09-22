@@ -72,3 +72,9 @@ This project is developed to have the following functionalities:
 - **Ticket Created**
 - **Ticket Updated**
 - **Charge Created**
+
+
+## For errors with Skaffold/Nginx ingress =>
+> kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+>
+> kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.35.0/deploy/static/provider/cloud/deploy.yaml

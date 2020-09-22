@@ -17,8 +17,8 @@ spec:
           image: jjaramillom/auth
           resources:
             limits:
-              memory: '128Mi' # 128 Mbits
-              cpu: '100m' # 10% of the CPU
+              memory: '528Mi' # 128 Mbits
+              cpu: '200m' # 10% of the CPU
 ---
 apiVersion: v1
 kind: Service
