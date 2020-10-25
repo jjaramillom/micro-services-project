@@ -1,5 +1,46 @@
 # Ticketing App Micro-services Udemy course
 
+#### To run the apps =>
+
+1. Enable Kubernetes.
+
+2. Install skaffold
+
+   ```bash
+   choco install -y skaffold
+   ```
+
+3. setup Ingress-Nginx
+
+   ```bash
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.40.2/deploy/static/provider/cloud/deploy.yaml
+   ```
+
+   **For errors with Skaffold/Nginx ingress =>**
+
+   ```bash
+   kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.35.0/deploy/static/provider/cloud/deploy.yaml
+   ```
+
+   or
+
+   ```bash
+   kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+   ```
+
+4. Init the app with
+
+   ```bash
+     skaffold dev
+   ```
+
+5. Modify the hosts file in **C:\Windows\System32\drivers\etc**. Add the following:
+
+   ```
+   127.0.0.1 ticketing.dev
+   ```
+
 This project is developed to have the following functionalities:
 
 - Users can list a ticket for an event (concert, sports) for sale
@@ -73,8 +114,6 @@ This project is developed to have the following functionalities:
 - **Ticket Updated**
 - **Charge Created**
 
+```
 
-## For errors with Skaffold/Nginx ingress =>
-> kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
->
-> kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.35.0/deploy/static/provider/cloud/deploy.yaml
+```
