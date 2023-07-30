@@ -15,7 +15,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
     errorCode = err.statusCode;
   }
 
-  res.status(400).send({
+  res.status(errorCode).send({
     errors: formattedErrors,
   });
 };

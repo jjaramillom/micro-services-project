@@ -12,11 +12,11 @@ export class RequestValidationError extends BaseError {
   }
 
   serializeError() {
-    return this.errors.map((err) => {
-      return {
-        message: err.msg,
-        field: err.param,
-      };
+    return this.errors.flatMap((err) => {
+      if (err.type === 'field') {
+        return { message: err.msg, field: err.path };
+      }
+      return [];
     });
   }
 }
