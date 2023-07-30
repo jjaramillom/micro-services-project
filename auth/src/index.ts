@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   res.send('Auth service running');
 });
 
-// If not route was found, a not found error is thrown
+// If no route was found, a not found error is thrown
 // For async functions, next has to be used
 /* app.all('*', async (_, __, next) => {
   next(new NotFoundError());

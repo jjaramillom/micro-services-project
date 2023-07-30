@@ -4,21 +4,22 @@
 
 1. Enable Kubernetes.
 
-2. Install skaffold
+2. Install minikube
+
+3. Install skaffold
 
    ```bash
-   choco install -y skaffold
+   curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
+   sudo install skaffold /usr/local/bin/
    ```
 
-3. setup Ingress-Nginx
+4. setup Ingress-Nginx
 
    ```bash
-   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.40.2/deploy/static/provider/cloud/deploy.yaml
+   minikube addons enable ingress
    ```
 
-   **For errors with Skaffold/Nginx ingress =>**
-
-   ```bash
+  <!--   ```bash
    kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.35.0/deploy/static/provider/cloud/deploy.yaml
    ```
@@ -27,19 +28,21 @@
 
    ```bash
    kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
-   ```
+   ``` -->
 
-4. Init the app with
+5. Init the app with
 
    ```bash
      skaffold dev
    ```
 
-5. Modify the hosts file in **C:\Windows\System32\drivers\etc**. Add the following:
+6. Modify the hosts file in **/etc/hosts**. Add the following:
 
    ```
-   127.0.0.1 ticketing.dev
+   127.0.0.1 ticketing.test
    ```
+
+   It is important noting. The minikube IP address might be different. So check this via `minikube ip` and then change the `/etc/hosts` IP address to the returned value.
 
 This project is developed to have the following functionalities:
 
@@ -113,7 +116,3 @@ This project is developed to have the following functionalities:
 - **Ticket Created**
 - **Ticket Updated**
 - **Charge Created**
-
-```
-
-```
