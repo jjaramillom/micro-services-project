@@ -1,6 +1,6 @@
-import { DatabaseConnectionError } from './database-connection-error';
+import { BadRequestError } from './BadRequestError';
 import { RequestValidationError } from './request-validation-error';
 import { NotFoundError } from './not-found-error';
 import BaseError from './base-error';
 
-export { BaseError, DatabaseConnectionError, RequestValidationError, NotFoundError };
+export { BaseError, BadRequestError, RequestValidationError, NotFoundError };
