@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import { RequestValidationError } from '../errors';
 
 // Middleware to extract Basic Auth credentials
-export const validateRequest = (req: Request, res: Response, next: NextFunction) => {
+export function validateRequest(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -12,4 +12,4 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
   }
 
   next();
-};
+}

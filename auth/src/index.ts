@@ -5,8 +5,6 @@ import cookieSession from 'cookie-session';
 
 import usersRouter from './routes/users';
 import authRouter from './routes/auth';
-import { signoutRouter } from './routes/signout';
-import { signupRouter } from './routes/signup';
 import { errorHandler } from './middleware/error-handler';
 import { NotFoundError } from './errors';
 

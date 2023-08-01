@@ -4,7 +4,7 @@ import { UnathorizedError } from '../errors/UnathorizedError';
 import { decodeToken } from '../utils/jwt';
 
 // Middleware to extract Basic Auth credentials
-export const basicAuthentication = async (req: Request, res: Response, next: NextFunction) => {
+export async function basicAuthentication(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -26,23 +26,26 @@ export const basicAuthentication = async (req: Request, res: Response, next: Nex
   }
 
   // @ts-ignore
-  req.user = user;
+  req.currentUser = user;
 
   next();
-};
+}
 
-export const jwtAuthentication = async (req: Request, res: Response, next: NextFunction) => {
+export async function jwtAuthentication(req: Request, res: Response, next: NextFunction) {
   const jwt = req.session?.jwt;
 
   if (!jwt) {
     return next(new UnathorizedError('Invalid authentication method'));
   }
   try {
-    const payload = decodeToken(jwt);
+    const { email } = decodeToken(jwt);
+    const user = await User.findOne({ email });
+    // @ts-ignore
+    req.currentUser = user;
   } catch (error) {
     return next(new UnathorizedError('Invalid JWT'));
   }
   // TODO validate expiration
 
   next();
-};
+}

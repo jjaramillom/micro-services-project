@@ -1,10 +1,9 @@
-import User, { IUser } from './../models/User';
+import User from './../models/User';
 import { Request, Response, NextFunction } from 'express';
 
-import { RequestValidationError, BadRequestError } from '../errors';
+import { BadRequestError } from '../errors';
 import { createToken } from '../utils/jwt';
-
-type UserResponse = Pick<IUser, 'email' | 'id'>;
+import { mapToUserResponse } from './mappers';
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
   const { password, email } = req.body;
@@ -25,15 +24,13 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
   res.status(201).send(mapToUserResponse(user)).end();
 }
 
-function mapToUserResponse(user: IUser): UserResponse {
-  return {
-    email: user.email,
-    id: user.id,
-  };
+export function login(req: Request, res: Response, next: NextFunction) {
+  const jwt = createToken(req.currentUser);
+  req.session = { jwt };
+  res.status(200).end();
 }
 
-export function login(req: Request, res: Response, next: NextFunction) {
-  const jwt = createToken((req as any).user);
-  req.session = { jwt };
+export function logout(req: Request, res: Response, next: NextFunction) {
+  req.session = null;
   res.status(200).end();
 }

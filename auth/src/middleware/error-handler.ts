@@ -6,7 +6,7 @@ type CommonError = {
   field?: string;
 };
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
   let formattedErrors: CommonError[] = [{ message: 'something went wrong.' }];
   let errorCode: number = 500;
 
@@ -18,4 +18,4 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
   res.status(errorCode).send({
     errors: formattedErrors,
   });
-};
+}

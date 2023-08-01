@@ -13,7 +13,7 @@ interface IUserMethods {
   isPasswordValid: (this: IUser, receivedPassword: string) => Promise<boolean>;
 }
 
-type UserModel = Model<IUser, {}, IUserMethods>;
+export type UserModel = Model<IUser, {}, IUserMethods>;
 
 const schema = new Schema<IUser, UserModel, IUserMethods>(
   {
