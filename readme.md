@@ -44,6 +44,28 @@
 
    It is important noting. The minikube IP address might be different. So check this via `minikube ip` and then change the `/etc/hosts` IP address to the returned value.
 
+7. Required secrets:
+
+   Auth container:
+
+   - JWT_KEY
+
+## TIPS
+
+1.  Kubernetes secrets:
+
+    To create secrets in Kubernetes we use the following command:
+    `kubectl create secret generic <SECRET-NAME> --from-literal=<KEY>=<VALUE>`
+
+    To check secrets:
+    `kubectl get secrets`
+
+2. Check possible issues in pods deployment:
+
+   `kubectl describe pod <POD-NAME>`
+
+
+
 This project is developed to have the following functionalities:
 
 - Users can list a ticket for an event (concert, sports) for sale

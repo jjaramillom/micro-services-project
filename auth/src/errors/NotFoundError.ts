@@ -1,4 +1,4 @@
-import BaseError from './base-error';
+import BaseError from './BaseError';
 
 export class NotFoundError extends BaseError {
   private reason: string = 'Not found';

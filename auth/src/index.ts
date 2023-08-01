@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { json } from 'body-parser';
 import mongoose from 'mongoose';
+import cookieSession from 'cookie-session';
 
-import { currentUserRouter } from './routes/currentUser';
-import { signinRouter } from './routes/signin';
+import usersRouter from './routes/users';
+import authRouter from './routes/auth';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
-import { errorHandler } from './middlewares/error-handler';
+import { errorHandler } from './middleware/error-handler';
 import { NotFoundError } from './errors';
 
 const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -15,14 +16,15 @@ const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const app = express();
+// Just to make express aware that there is a proxy behind. So that traffic coming from nginx is also considered as safe
+app.set('trust proxy', true);
 
 app.use(json());
+app.use(cookieSession({ signed: false, secure: true }));
 app.use(loggingMiddleware);
 
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
-app.use(signupRouter);
+app.use(usersRouter);
+app.use(authRouter);
 
 app.get('/', (req, res) => {
   res.send('Auth service running');
@@ -41,6 +43,10 @@ app.all('*', () => {
 app.use(errorHandler);
 
 const start = async () => {
+  // if (!process.env.JWT_KEY) {
+  //   throw new Error('JWT_KEY must be defined');
+  // }
+
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
     console.log('Connected to MongoDB');

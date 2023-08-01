@@ -1,6 +1,6 @@
 import { BadRequestError } from './BadRequestError';
-import { RequestValidationError } from './request-validation-error';
-import { NotFoundError } from './not-found-error';
-import BaseError from './base-error';
+import { RequestValidationError } from './RequestValidationError';
+import { NotFoundError } from './NotFoundError';
+import BaseError from './BaseError';
 
 export { BaseError, BadRequestError, RequestValidationError, NotFoundError };
