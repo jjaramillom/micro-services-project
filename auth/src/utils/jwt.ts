@@ -3,12 +3,14 @@ import { IUser } from '../models/User';
 
 type Payload = IUser;
 
-const JWT_KEY = process.env.JWT_KEY!;
+function getJwtKey() {
+  return process.env.JWT_KEY!;
+}
 
 export function createToken(user: Payload): string {
-  return sign({ email: user.email, id: user.id }, JWT_KEY);
+  return sign({ email: user.email, id: user.id }, getJwtKey());
 }
 
 export function decodeToken(token: string): Payload {
-  return verify(token, JWT_KEY) as Payload;
+  return verify(token, getJwtKey()) as Payload;
 }
