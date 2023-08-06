@@ -8,6 +8,7 @@ build:
   local:
     push: false
   artifacts:
+  # Sets up code syncing. So that when code changes, the changes are synced into the pods
     - image: jjaramillom/auth
       context: auth
       docker:
@@ -15,4 +16,14 @@ build:
       sync:
         manual:
           - src: 'src/**/*.ts'
+            dest: .
+    - image: jjaramillom/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+          - src: 'src/**/*.tsx'
             dest: .
