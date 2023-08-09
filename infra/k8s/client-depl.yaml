@@ -16,10 +16,6 @@ spec:
       containers:
         - name: client
           image: jjaramillom/client
-          resources:
-            limits:
-              memory: '1000Mi' # 128 Mbits
-              cpu: '200m' # 10% of the CPU
 ---
 apiVersion: v1
 kind: Service
