@@ -1,11 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
+import { errorHandler ,NotFoundError,setJwtTokenKey} from '@jjaramillom-tickets/common';
 
 import usersRouter from './routes/users';
 import authRouter from './routes/auth';
-import { errorHandler } from './middleware/error-handler';
-import { NotFoundError } from './errors';
+
+setJwtTokenKey(process.env.JWT_KEY!)
 
 const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (process.env.NODE_ENV !== 'test') {

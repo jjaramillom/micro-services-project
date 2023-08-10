@@ -1,8 +1,7 @@
 import User from './../models/User';
 import { Request, Response, NextFunction } from 'express';
+import { GeneralError, createJwtToken } from '@jjaramillom-tickets/common';
 
-import { BadRequestError, GeneralError } from '../errors';
-import { createToken } from '../utils/jwt';
 import { mapToUserResponse } from './mappers';
 
 export async function signUp(req: Request, res: Response, next: NextFunction) {
@@ -19,13 +18,13 @@ export async function signUp(req: Request, res: Response, next: NextFunction) {
     return next(new GeneralError(500, 'Internal database error'));
   }
 
-  const jwt = createToken(user);
+  const jwt = createJwtToken({ email: user.email, id: user.id });
   req.session = { jwt };
   res.status(201).send(mapToUserResponse(user)).end();
 }
 
 export function login(req: Request, res: Response, next: NextFunction) {
-  const jwt = createToken(req.currentUser);
+  const jwt = createJwtToken({ email: req.currentUser.email, id: req.currentUser.id });
   req.session = { jwt };
   res.status(200).end();
 }

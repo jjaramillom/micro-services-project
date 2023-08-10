@@ -1,9 +1,9 @@
 import express from 'express';
 import { body } from 'express-validator';
+import { validateRequest } from '@jjaramillom-tickets/common';
 
 import { login, signUp, logout } from '../controllers/authController';
 import { basicAuthentication } from '../middleware';
-import { validateRequest } from '../middleware';
 
 const router = express.Router();
 

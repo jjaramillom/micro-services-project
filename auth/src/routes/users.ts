@@ -1,6 +1,7 @@
 import express from 'express';
 import { getCurrentUser } from '../controllers/usersController';
-import { jwtAuthentication } from '../middleware/authenticate';
+import { jwtAuthentication } from '@jjaramillom-tickets/common';
+
 
 const router = express.Router();
 
