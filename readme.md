@@ -138,3 +138,9 @@ This project is developed to have the following functionalities:
 - **Ticket Created**
 - **Ticket Updated**
 - **Charge Created**
+
+
+## Publishing an NPM package
+
+If we don't add `--access public` NPM will think that the package is private
+`npm publish --access public`

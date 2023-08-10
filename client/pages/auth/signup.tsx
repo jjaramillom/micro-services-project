@@ -24,7 +24,7 @@ const SignUp = ({ user }: Props) => {
   return (
     <>
       <Header user={user} />
-      <LoginForm type='login' onSubmit={handleSubmit} errors={errors} />
+      <LoginForm type='signUp' onSubmit={handleSubmit} errors={errors} />
     </>
   );
 };
