@@ -65,6 +65,4 @@ schema.methods.isPasswordValid = async function (receivedPassword) {
   });
 };
 
-const temp = model<IUser, UserModel>('User', schema);
-
 export default model<IUser, UserModel>('User', schema);
