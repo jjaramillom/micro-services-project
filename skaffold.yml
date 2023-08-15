@@ -17,16 +17,16 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    # - image: jjaramillom/client
-    #   context: client
-    #   docker:
-    #     dockerfile: Dockerfile
-    #   sync:
-    #     manual:
-    #       - src: 'src/**/*.ts'
-    #         dest: .
-    #       - src: 'src/**/*.tsx'
-    #         dest: .
+    - image: jjaramillom/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+          - src: 'src/**/*.tsx'
+            dest: .
     - image: jjaramillom/tickets
       context: tickets
       docker:
