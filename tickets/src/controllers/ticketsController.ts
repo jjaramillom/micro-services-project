@@ -1,9 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { isValidObjectId } from 'mongoose';
+import {
+  NotFoundError,
+  GeneralError,
+  TicketCreatedPublisher,
+} from '@jjaramillom-tickets/common';
 
 import Ticket, { ITicket } from '../models/Ticket';
 import { mapToTicketResponse } from './mappers';
-import { NotFoundError, GeneralError } from '@jjaramillom-tickets/common';
+import natsWrapper from '../services/natsWrapper';
 
 export async function createTicket(req: Request, res: Response, next: NextFunction) {
   const user = req.tokenPayload;
@@ -11,6 +16,9 @@ export async function createTicket(req: Request, res: Response, next: NextFuncti
 
   try {
     const ticket = await Ticket.create({ ...ticketData, userId: user.id });
+    const client = natsWrapper.getClient();
+    const ticketCreatedPublisher = new TicketCreatedPublisher(client);
+    ticketCreatedPublisher.publish(ticket);
     res.status(201).send(mapToTicketResponse(ticket)).end();
   } catch (error) {
     console.error(error);

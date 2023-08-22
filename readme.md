@@ -65,6 +65,12 @@
    `kubectl describe pod <POD-NAME>`
 
 
+## TODOS
+
+Things out of the scope of the course worth trying:
+- Change NATS for an industry-standard message brokers like RabbitMQ or Kafka.
+- Handle errors when publishing an event to NATS by adding an events collection to each service DB and then adding a "retry" service to avoid data integrity issues explained in this [video](https://www.udemy.com/course/microservices-with-node-js-and-react/learn/lecture/19485352) at ~ 4:00
+
 
 This project is developed to have the following functionalities:
 

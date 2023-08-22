@@ -1,13 +1,18 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 
 import app from '../../app';
 import Ticket from '../../models/Ticket';
+import natsWrapper from '../../services/natsWrapper';
+
+jest.mock('../../services/natsWrapper.ts');
+
+const natsClient = natsWrapper.getClient();
 
 describe('tickets', () => {
   let sessionCookie: string[];
   beforeEach(() => {
     sessionCookie = signIn();
+    (natsClient.publish as jest.Mock).mockClear();
   });
   describe('create', () => {
     it('can only be accessed if the user is signed in', async () => {
@@ -18,6 +23,13 @@ describe('tickets', () => {
         .set('Cookie', sessionCookie)
         .send({ title: 'test', price: 100 });
       expect(res.statusCode).toBe(201);
+      expect(natsClient.publish).toHaveBeenCalledTimes(1);
+      const { body } = res;
+      expect(natsClient.publish).toHaveBeenCalledWith(
+        'ticket:created',
+        JSON.stringify({ title: body.title, userId: '123', price: body.price, id: body.id }),
+        expect.any(Function)
+      );
     });
 
     it('returns 400 if invalid title is provided', async () => {

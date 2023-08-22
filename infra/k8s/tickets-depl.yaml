@@ -21,6 +21,15 @@ spec:
                 secretKeyRef:
                   name: jwt-key
                   key: JWT_KEY
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  # get the pod name and set it as the env variable value
+                  fieldPath: metadata.name
             - name: MONGO_URI
               value: mongodb://tickets-mongo-srv:27017/tickets
           resources:

@@ -6,7 +6,7 @@ sc.on('connect', () => {
   console.log('connected');
 
   const opts = sc.subscriptionOptions().setStartWithLastReceived();
-  const subscription = sc.subscribe('test-topic', opts);
+  const subscription = sc.subscribe('ticket:created', opts);
   subscription.on('message', (msg: Message) => {
     const data = JSON.parse((msg.getData() as Buffer).toString());
     data.price = data.price + 2000;
