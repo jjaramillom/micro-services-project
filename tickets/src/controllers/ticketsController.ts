@@ -4,6 +4,7 @@ import {
   NotFoundError,
   GeneralError,
   TicketCreatedPublisher,
+  TicketUpdatedPublisher,
 } from '@jjaramillom-tickets/common';
 
 import Ticket, { ITicket } from '../models/Ticket';
@@ -48,6 +49,9 @@ export async function updateTicket(req: Request, res: Response, next: NextFuncti
     ticket.set({ title: ticketData.title, price: ticketData.price });
     await ticket.save();
 
+    const client = natsWrapper.getClient();
+    const ticketUpdatedPublisher = new TicketUpdatedPublisher(client);
+    ticketUpdatedPublisher.publish(ticket);
     res.status(200).send(mapToTicketResponse(ticket)).end();
   } catch (error) {
     console.error(error);
