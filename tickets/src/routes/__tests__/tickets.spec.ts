@@ -86,14 +86,6 @@ describe('tickets', () => {
       expect(res.statusCode).toBe(404);
     });
 
-    it('returns 404 if ticket does not exist', async () => {
-      const res = await request(app)
-        .get('/api/tickets/123')
-        .set('Cookie', sessionCookie)
-        .send();
-      expect(res.statusCode).toBe(404);
-    });
-
     it('returns ticket', async () => {
       const { body } = await request(app)
         .post('/api/tickets')

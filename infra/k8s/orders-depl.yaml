@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: jjaramillom/orders
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-key
+                  key: JWT_KEY
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  # get the pod name and set it as the env variable value
+                  fieldPath: metadata.name
+            - name: MONGO_URI
+              value: mongodb://orders-mongo-srv:27017/orders
+          resources:
+            limits:
+              memory: '1000Mi' # 128 Mbits
+              cpu: '200m' # 10% of the CPU
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-srv
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

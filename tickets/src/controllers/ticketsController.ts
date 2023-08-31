@@ -7,7 +7,7 @@ import {
   TicketUpdatedPublisher,
 } from '@jjaramillom-tickets/common';
 
-import Ticket, { ITicket } from '../models/Ticket';
+import Ticket from '../models/Ticket';
 import { mapToTicketResponse } from './mappers';
 import natsWrapper from '../services/natsWrapper';
 
@@ -94,8 +94,7 @@ export async function getTickets(req: Request, res: Response, next: NextFunction
 declare global {
   namespace Express {
     interface Request {
-      currentUser: { email: string; id: string };
-      tokenPayload: ITicket;
+      tokenPayload: { email: string; id: string };
     }
   }
 }

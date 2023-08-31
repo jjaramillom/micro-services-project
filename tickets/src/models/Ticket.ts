@@ -7,7 +7,7 @@ export interface ITicket {
   price: number;
 }
 
-export type TicketModel = Model<ITicket, {}>;
+ type TicketModel = Model<ITicket, {}>;
 
 const schema = new Schema<ITicket, TicketModel>(
   {
@@ -26,4 +26,4 @@ const schema = new Schema<ITicket, TicketModel>(
   }
 );
 
-export default model<ITicket, TicketModel>('User', schema);
+export default model<ITicket, TicketModel>('Ticket', schema);

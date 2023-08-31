@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-mongo-depl
+spec:
+  replicas: 1
+  # How the deployment finds the created pods
+  selector:
+    matchLabels:
+      app: orders-mongo
+  template:
+    metadata:
+      # Label that gets applied to the pod
+      labels:
+        app: orders-mongo
+    spec:
+      containers:
+        - name: orders-mongo
+          image: mongo
+          resources:
+            limits:
+              memory: '528Mi' # 128 Mbits
+              cpu: '200m' # 10% of the CPU
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-mongo-srv
+spec:
+  # Which pods is the service gonna have access to
+  selector:
+    app: orders-mongo
+  ports:
+  # name is only for logging purposes
+    - name: db
+      protocol: TCP
+      # default mongo port
+      port: 27017
+      targetPort: 27017
