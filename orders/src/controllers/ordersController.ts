@@ -1,9 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import { isValidObjectId } from 'mongoose';
-import { NotFoundError, GeneralError, OrderStatus } from '@jjaramillom-tickets/common';
+import {
+  NotFoundError,
+  GeneralError,
+  OrderStatus,
+  OrderCreatedEvent,
+} from '@jjaramillom-tickets/common';
 
-import Order from '../models/Order';
+import Order, { IOrder } from '../models/Order';
 import Ticket from '../models/Ticket';
+import {
+  OrderCancelledEventPublisher,
+  OrderCreatedEventPublisher,
+} from '../events/publishers/orderPublishers';
+import natsWrapper from '../services/natsWrapper';
 
 const EXPIRATION_TIME = 1000 * 60 * 15; // 15 minutes
 
@@ -31,6 +41,15 @@ export async function createOrder(req: Request, res: Response, next: NextFunctio
       status: OrderStatus.Created,
       ticket,
     });
+    const client = natsWrapper.getClient();
+    const publisher = new OrderCreatedEventPublisher(client);
+    publisher.publish({
+      expiresAt: order.expiresAt.toISOString(),
+      id: order.id,
+      status: order.status,
+      ticket: order.ticket,
+      userId: order.userId,
+    });
     res.status(201).send(order).end();
   } catch (error) {
     console.error(error);
@@ -51,6 +70,9 @@ export async function cancelOrder(req: Request, res: Response, next: NextFunctio
     }
     order.status = OrderStatus.Cancelled;
     await order.save();
+    const client = natsWrapper.getClient();
+    const publisher = new OrderCancelledEventPublisher(client);
+    publisher.publish({ id: order.id, ticket: order.ticket });
     res.status(204).send().end();
   } catch (error) {
     console.error(error);
